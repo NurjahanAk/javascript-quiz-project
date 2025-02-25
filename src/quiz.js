@@ -44,14 +44,22 @@ class Quiz {
             return true;
         }
     }
-/*
-  hasEnded(){
-    if(this.currentQuestionIndex<this.questions.length){
-        return false;
-    }else {
-        return true;
+  filterQuestionsByDifficulty(difficulty){
+    if (![1,2,3].includes(difficulty)){
+        return;
     }
-}
-*/    
+    
+    this.questions=this.questions.filter(q=>q.difficulty===difficulty);
+    
+  }
+  averageDifficulty(){
+    
+  }
+
+  averageDifficulty() {
+    const totalDifficulty = this.questions.reduce((totDiff, diff) =>  totDiff + diff.difficulty, 0);
+
+    return totalDifficulty / this.questions.length;
+  }
 
 }
