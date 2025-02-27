@@ -71,7 +71,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /************  TIMER  ************/
 
-  let timer;
+  let timer = setInterval(() => {
+    if (quiz.timeRemaining > 0) {
+      quiz.timeRemaining--;
+      const minutes = Math.floor(quiz.timeRemaining / 60)
+        .toString()
+        .padStart(2, "0");
+      const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+      timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    } else {
+      showResults();
+    }
+  }, 1000);
 
   /************  EVENT LISTENERS  ************/
 
@@ -176,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showResults() {
     // YOUR CODE HERE:
-    //
+
     // 1. Hide the quiz view (div#quizView)
     quizView.style.display = "none";
 
@@ -185,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
+    clearInterval(timer);
   }
 
   const resetQuizBtnElement = document.getElementById("restartButton");
@@ -193,6 +205,20 @@ document.addEventListener("DOMContentLoaded", () => {
     quizView.style.display = "flex";
     quiz.currentQuestionIndex = 0;
     quiz.correctAnswers = 0;
+    quiz.timeRemaining = quizDuration + 1;
+
+    timer = setInterval(() => {
+      if (quiz.timeRemaining > 0) {
+        quiz.timeRemaining--;
+        const minutes = Math.floor(quiz.timeRemaining / 60)
+          .toString()
+          .padStart(2, "0");
+        const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+        timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+      } else {
+        showResults();
+      }
+    }, 1000);
     quiz.shuffleQuestions();
     showQuestion();
   });
